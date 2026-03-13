@@ -1,0 +1,14 @@
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Play / SBT
+backend/target/
+backend/project/target/
+backend/project/project/
+backend/.bsp/
+backend/.idea/
+backend/.metals/
+
+# Env
+.env

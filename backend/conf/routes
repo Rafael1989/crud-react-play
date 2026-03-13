@@ -1,0 +1,6 @@
+# Product CRUD
+GET     /api/products         controllers.ProductController.listProducts
+GET     /api/products/:id     controllers.ProductController.getProduct(id: Long)
+POST    /api/products         controllers.ProductController.createProduct(request: Request)
+PUT     /api/products/:id     controllers.ProductController.updateProduct(id: Long, request: Request)
+DELETE  /api/products/:id     controllers.ProductController.deleteProduct(id: Long)

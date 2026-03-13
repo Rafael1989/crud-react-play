@@ -9,7 +9,7 @@ async function parseResponse(response) {
 
   if (!response.ok) {
     const message = data.details ? `${data.error}: ${data.details}` : data.error;
-    throw new Error(message || 'Erro na requisicao');
+    throw new Error(message || 'Request error');
   }
 
   return data;

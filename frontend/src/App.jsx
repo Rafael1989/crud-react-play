@@ -105,18 +105,18 @@ function App() {
       <main className="dashboard">
         <header className="hero">
           <p className="tag">PLAY + REACT + MYSQL</p>
-          <h1>Gestao de Produtos</h1>
-          <p className="subtitle">CRUD desktop-first para cadastro, edicao e remocao de produtos.</p>
+          <h1>Product Management</h1>
+          <p className="subtitle">Desktop-first CRUD for creating, editing, and deleting products.</p>
         </header>
 
         <section className="stats">
           <article>
             <strong>{products.length}</strong>
-            <span>Produtos cadastrados</span>
+            <span>Registered products</span>
           </article>
           <article>
             <strong>{totalItems}</strong>
-            <span>Itens em estoque</span>
+            <span>Items in stock</span>
           </article>
         </section>
 
@@ -124,21 +124,21 @@ function App() {
 
         <section className="content-grid">
           <form className="panel form-panel" onSubmit={handleSubmit}>
-            <h2>{editingId ? 'Editar produto' : 'Novo produto'}</h2>
+            <h2>{editingId ? 'Edit product' : 'New product'}</h2>
 
             <label>
-              Nome
+              Name
               <input name="name" value={form.name} onChange={handleChange} required />
             </label>
 
             <label>
-              Descricao
+              Description
               <textarea name="description" value={form.description} onChange={handleChange} rows="3" />
             </label>
 
             <div className="row">
               <label>
-                Preco
+                Price
                 <input
                   name="price"
                   type="number"
@@ -151,7 +151,7 @@ function App() {
               </label>
 
               <label>
-                Quantidade
+                Quantity
                 <input
                   name="quantity"
                   type="number"
@@ -166,31 +166,31 @@ function App() {
 
             <div className="actions">
               <button type="submit" className="primary">
-                {editingId ? 'Atualizar' : 'Salvar'}
+                {editingId ? 'Update' : 'Save'}
               </button>
               {editingId ? (
                 <button type="button" className="ghost" onClick={resetForm}>
-                  Cancelar
+                  Cancel
                 </button>
               ) : null}
             </div>
           </form>
 
           <section className="panel table-panel">
-            <h2>Produtos</h2>
+            <h2>Products</h2>
             {loading ? (
-              <p>Carregando...</p>
+              <p>Loading...</p>
             ) : products.length === 0 ? (
-              <p>Nenhum produto cadastrado.</p>
+              <p>No products registered.</p>
             ) : (
               <div className="table-wrap">
                 <table>
                   <thead>
                     <tr>
-                      <th>Nome</th>
-                      <th>Preco</th>
-                      <th>Qtd</th>
-                      <th>Acoes</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Qty</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -198,16 +198,16 @@ function App() {
                       <tr key={product.id}>
                         <td>
                           <strong>{product.name}</strong>
-                          <small>{product.description || 'Sem descricao'}</small>
+                          <small>{product.description || 'No description'}</small>
                         </td>
                         <td>R$ {Number(product.price).toFixed(2)}</td>
                         <td>{product.quantity}</td>
                         <td className="btn-group">
                           <button className="ghost" onClick={() => handleEdit(product)}>
-                            Editar
+                            Edit
                           </button>
                           <button className="danger" onClick={() => handleDelete(product.id)}>
-                            Excluir
+                            Delete
                           </button>
                         </td>
                       </tr>

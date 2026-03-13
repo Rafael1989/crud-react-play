@@ -32,7 +32,7 @@ public class ProductController extends Controller {
             List<Product> products = repository.findAll();
             return ok(Json.toJson(products));
         } catch (SQLException exception) {
-            return internalServerError(error("Erro ao listar produtos", exception));
+            return internalServerError(error("Failed to list products", exception));
         }
     }
 
@@ -40,9 +40,9 @@ public class ProductController extends Controller {
         try {
             Optional<Product> product = repository.findById(id);
             return product.map(value -> ok(Json.toJson(value)))
-                    .orElseGet(() -> notFound(error("Produto nao encontrado")));
+                    .orElseGet(() -> notFound(error("Product not found")));
         } catch (SQLException exception) {
-            return internalServerError(error("Erro ao buscar produto", exception));
+            return internalServerError(error("Failed to get product", exception));
         }
     }
 
@@ -54,7 +54,7 @@ public class ProductController extends Controller {
         } catch (IllegalArgumentException | IOException exception) {
             return badRequest(error(exception.getMessage()));
         } catch (SQLException exception) {
-            return internalServerError(error("Erro ao criar produto", exception));
+            return internalServerError(error("Failed to create product", exception));
         }
     }
 
@@ -63,11 +63,11 @@ public class ProductController extends Controller {
             Product product = parseAndValidate(request.body().asJson());
             Optional<Product> updated = repository.update(id, product);
             return updated.map(value -> ok(Json.toJson(value)))
-                    .orElseGet(() -> notFound(error("Produto nao encontrado")));
+                    .orElseGet(() -> notFound(error("Product not found")));
         } catch (IllegalArgumentException | IOException exception) {
             return badRequest(error(exception.getMessage()));
         } catch (SQLException exception) {
-            return internalServerError(error("Erro ao atualizar produto", exception));
+            return internalServerError(error("Failed to update product", exception));
         }
     }
 
@@ -75,31 +75,31 @@ public class ProductController extends Controller {
         try {
             boolean deleted = repository.delete(id);
             if (!deleted) {
-                return notFound(error("Produto nao encontrado"));
+                return notFound(error("Product not found"));
             }
             return noContent();
         } catch (SQLException exception) {
-            return internalServerError(error("Erro ao remover produto", exception));
+            return internalServerError(error("Failed to delete product", exception));
         }
     }
 
     private Product parseAndValidate(JsonNode body) throws IOException {
         if (body == null) {
-            throw new IllegalArgumentException("Body JSON obrigatorio");
+            throw new IllegalArgumentException("JSON body is required");
         }
 
         Product product = objectMapper.treeToValue(body, Product.class);
 
         if (product.getName() == null || product.getName().isBlank()) {
-            throw new IllegalArgumentException("Campo 'name' obrigatorio");
+            throw new IllegalArgumentException("Field 'name' is required");
         }
 
         if (product.getPrice() == null || product.getPrice().compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Campo 'price' deve ser maior ou igual a zero");
+            throw new IllegalArgumentException("Field 'price' must be greater than or equal to zero");
         }
 
         if (product.getQuantity() == null || product.getQuantity() < 0) {
-            throw new IllegalArgumentException("Campo 'quantity' deve ser maior ou igual a zero");
+            throw new IllegalArgumentException("Field 'quantity' must be greater than or equal to zero");
         }
 
         return product;

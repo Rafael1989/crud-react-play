@@ -1,40 +1,65 @@
 # CRUD React + Play Framework + MySQL
 
-Projeto full stack com:
-- Frontend React (layout desktop-first)
-- Backend Play Framework com Java
-- Banco de dados MySQL
+Full-stack product CRUD project with a React frontend and a Play Framework (Java) REST API backed by MySQL.
 
-## Estrutura
+## Stack
 
-- `frontend/`: aplicação React (Vite)
-- `backend/`: API REST com Play Framework
-- `database/`: script de inicialização do banco
-- `docker-compose.yml`: sobe o MySQL
+- Frontend: React + Vite
+- Backend: Play Framework 2.9 (Java)
+- Database: MySQL 8
 
-## Pré-requisitos
+## Project Structure
 
-- Java 17 ou 21
-- SBT
+- frontend/: React application
+- backend/: Play REST API
+- database/: SQL scripts
+- docker-compose.yml: MySQL container
+- start-backend.bat: starts backend on Windows
+- start-frontend.bat: starts frontend on Windows
+- stop-play.bat: stops Play/Java/SBT processes and frees ports
+
+## Prerequisites
+
+- Java 17 or 21 (recommended)
 - Node.js 20+
-- Docker + Docker Compose
+- npm
+- SBT
+- MySQL 8 local install or Docker
 
-## 1. Subir o MySQL
+## Database Configuration
+
+This project is configured with:
+
+- host: localhost
+- port: 3306
+- database: crud_play
+- username: root
+- password: root
+
+Credentials are defined in backend/conf/application.conf.
+
+### Option A: MySQL with Docker
 
 ```bash
 docker compose up -d
 ```
 
-## 2. Rodar o backend
+### Option B: Local MySQL
+
+Create the database and products table using the SQL script in database/.
+
+## Running the Project (Manual)
+
+### 1) Backend
 
 ```bash
 cd backend
 sbt run
 ```
 
-API em: `http://localhost:9000`
+Backend URL: http://localhost:9000
 
-## 3. Rodar o frontend
+### 2) Frontend
 
 ```bash
 cd frontend
@@ -42,12 +67,62 @@ npm install
 npm run dev
 ```
 
-Frontend em: `http://localhost:5173`
+Frontend URL: http://localhost:5173
 
-## Endpoints principais
+If port 5173 is busy, Vite will use another port (for example, 5174).
 
-- `GET /api/products`
-- `GET /api/products/:id`
-- `POST /api/products`
-- `PUT /api/products/:id`
-- `DELETE /api/products/:id`
+## Running the Project (Windows Scripts)
+
+From the project root:
+
+```bat
+start-backend.bat
+start-frontend.bat
+```
+
+To stop services and free Play ports:
+
+```bat
+stop-play.bat
+```
+
+## API Endpoints
+
+- GET /api/products
+- GET /api/products/:id
+- POST /api/products
+- PUT /api/products/:id
+- DELETE /api/products/:id
+
+## Payload Example
+
+```json
+{
+  "name": "Mechanical Keyboard",
+  "description": "RGB",
+  "price": 350.0,
+  "quantity": 15
+}
+```
+
+## Troubleshooting
+
+### SBT Error on Windows (ServerAlreadyBootingException / lock)
+
+If you see a lock error like sbt-load-..._lock:
+
+1. Run stop-play.bat
+2. Open a new terminal
+3. Go to backend/
+4. Run sbt run again
+
+### Java 25 Warning
+
+Play 2.9 officially supports Java 11, 17, and 21. Java 25 may still run, but with warnings and possible instability.
+
+## CRUD Goals
+
+- Create product
+- List products
+- Update product
+- Delete product
